@@ -1,21 +1,23 @@
 import customtkinter as ctk
 from tkinter import ttk
-from Libros_ejemplo import Libros_ejemplo
-from Biblioteca_ejemplo import Biblioteca_ejemplo
+from Ingredientes import Ingredientes
+from Inventario import Inventario
 import re
 from CTkMessagebox import CTkMessagebox
 
 class AplicacionConPestanas(ctk.CTk):
     def __init__(self):
         super().__init__()
-
-        # Configuración de la ventana principal
-        self.title("Biblioteca")
+        self.title("Tienda")
         self.geometry("1200x700")
 
         # Inicializar la Biblioteca
-        self.biblioteca = Biblioteca_ejemplo()
+        self.Inventario = Inventario()
 
+        self.recetas = {
+            "hamburguesa": [("Pan", "2"), ("Lechuga", "1"), ("Carne", "1")],
+            # Agregar más recetas según se necesiten
+        }
         # Crear pestañas
         self.tabview = ctk.CTkTabview(self, width=600, height=500)
         self.tabview.pack(padx=20, pady=20)
@@ -24,7 +26,8 @@ class AplicacionConPestanas(ctk.CTk):
 
     def crear_pestanas(self):
         # Crear y configurar las pestañas
-        self.tab1 = self.tabview.add("Ingreso de Libros")
+        self.tab1 = self.tabview.add("Ingreso de ingredientes")
+        self.tab2 = self.tabview.add("Menu")
 
         # Configurar el contenido de la pestaña 1
         self.configurar_pestana1()
@@ -38,31 +41,31 @@ class AplicacionConPestanas(ctk.CTk):
         frame_treeview.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
         # Formulario en el primer frame
-        label_nombre = ctk.CTkLabel(frame_formulario, text="Nombre del Libro:")
+        label_nombre = ctk.CTkLabel(frame_formulario, text="Nombre del Ingrediente:")
         label_nombre.pack(pady=5)
         self.entry_nombre = ctk.CTkEntry(frame_formulario)
         self.entry_nombre.pack(pady=5)
         
-        label_categoria = ctk.CTkLabel(frame_formulario, text = "Categoria")
-        label_categoria.pack(pady=5)
-        self.entry_categoria = ctk.CTkEntry(frame_formulario)
-        self.entry_categoria.pack(pady = 5)
+        label_cantidad = ctk.CTkLabel(frame_formulario, text="Cantidad")
+        label_cantidad.pack(pady=5)
+        self.entry_cantidad = ctk.CTkEntry(frame_formulario)
+        self.entry_cantidad.pack(pady=5)
 
 
-        #Boton de ingreso
-        self.boton_ingresar = ctk.CTkButton(frame_formulario, text="Ingresar Libro")
-        self.boton_ingresar.configure(command=self.ingresar_libro)
+        # Botón de ingreso
+        self.boton_ingresar = ctk.CTkButton(frame_formulario, text="Ingresar Ingrediente")
+        self.boton_ingresar.configure(command=self.ingresar_ingrediente)
         self.boton_ingresar.pack(pady=10)
         
-        # Botón para eliminar libro arriba del Treeview
-        self.boton_eliminar = ctk.CTkButton(frame_treeview, text="Eliminar Libro", fg_color="black", text_color="white")
-        self.boton_eliminar.configure(command=self.eliminar_libro)
+        # Botón para eliminar ingrediente arriba del Treeview
+        self.boton_eliminar = ctk.CTkButton(frame_treeview, text="Eliminar Ingrediente", fg_color="black", text_color="white")
+        self.boton_eliminar.configure(command=self.eliminar_ingrediente)
         self.boton_eliminar.pack(pady=10)
-
+        
         # Treeview en el segundo frame
-        self.tree = ttk.Treeview(frame_treeview, columns=("Nombre","Categoria"), show="headings")
+        self.tree = ttk.Treeview(frame_treeview, columns=("Nombre", "Cantidad"), show="headings")
         self.tree.heading("Nombre", text="Nombre")
-        self.tree.heading("Categoria", text="Categoria")
+        self.tree.heading("Cantidad", text="Cantidad")
         
         self.tree.pack(expand=True, fill="both", padx=10, pady=10)
 
@@ -72,58 +75,71 @@ class AplicacionConPestanas(ctk.CTk):
         else:
             CTkMessagebox(title="Error de Validación", message="El nombre debe contener solo letras y espacios.", icon="warning")
             return False
-    def validar_precio(self, Categoria):
-        if re.match(r"[1-999]", Categoria):
+    def validar_cantidad (self, cantidad):
+        if re.match(r"[1-999]", cantidad):
             return True
         else:
             CTkMessagebox(title="Error de Validación", message="la categoria debe contener solo numeros", icon="warning")
             return False
-
         
-   
-
-    def ingresar_libro(self):
+    def ingresar_ingrediente(self):
         nombre = self.entry_nombre.get()
-        categoria = self.entry_categoria.get()
+        cantidad = self.entry_cantidad.get()
+    # Verificar si el nombre ingresado es una receta predefinida
+        if nombre in self.recetas:
+            self.agregar_receta_predefinida(nombre)
+            CTkMessagebox(title="Receta Agregada", message=f"Se han agregado los ingredientes para la receta '{nombre}'.", icon="info")
+        else:
+        # Validar entradas normales
+            if not nombre or not cantidad:
+                CTkMessagebox(title="Error", message="Debe ingresar un nombre y una cantidad.", icon="warning")
+                return
 
-        # Validar entradas
         if not self.validar_nombre(nombre):
             return
-        if not self.validar_precio(categoria):
+        if not self.validar_cantidad(cantidad):
             return
-        # Crear una instancia de Libro
-        libro = Libros_ejemplo(nombre,categoria)
 
-        # Agregar el libro a la biblioteca
-        if self.biblioteca.agregar_libro(libro):
+        ingrediente = Ingredientes(nombre, cantidad)
+
+        if self.Inventario.agregar_ingrediente(ingrediente):
             self.actualizar_treeview()
         else:
-            CTkMessagebox(title="Error", message="El libro ya existe en la biblioteca.", icon="warning")
+            CTkMessagebox(title="Error", message="El ingrediente ya existe en el inventario.", icon="warning")
 
-    def eliminar_libro(self):
+    def eliminar_ingrediente(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            CTkMessagebox(title="Error", message="Por favor selecciona un libro para eliminar.", icon="warning")
+            CTkMessagebox(title="Error", message="Por favor selecciona un ingrediente para eliminar.", icon="warning")
             return
 
         item = self.tree.item(seleccion)
         nombre = item['values'][0]
 
-        # Eliminar el libro de la biblioteca
-        if self.biblioteca.eliminar_libro(nombre):
+        if self.Inventario.eliminar_ingrediente(nombre):
             self.actualizar_treeview()
         else:
-            CTkMessagebox(title="Error", message="El libro no se pudo eliminar.", icon="warning")
+            CTkMessagebox(title="Error", message="El ingrediente no se pudo eliminar.", icon="warning")
 
     def actualizar_treeview(self):
-        # Limpiar el Treeview actual
         for item in self.tree.get_children():
             self.tree.delete(item)
 
-        # Agregar todos los libros de la biblioteca al Treeview
-        for libro in self.biblioteca.obtener_libros():
-            self.tree.insert("", "end", values=(libro.nombre, libro.categoria))
+        for ingrediente in self.Inventario.obtener_ingredientes():
+            self.tree.insert("", "end", values=(ingrediente.nombre, ingrediente.cantidad))
+            
+    def agregar_receta_predefinida(self, receta_nombre):
+        recetas = {
+            "hamburguesa": [("Pan", 2), ("Lechuga", 1), ("Carne", 1)],
+            # Agregar más recetas según se necesiten
+        }
 
+        if receta_nombre in recetas:
+            for nombre, cantidad in recetas[receta_nombre]:
+                ingrediente = Ingredientes(nombre, cantidad)
+                self.Inventario.agregar_ingrediente(ingrediente)
+
+        self.actualizar_treeview()
 
 if __name__ == "__main__":
     ctk.set_appearance_mode("System")
