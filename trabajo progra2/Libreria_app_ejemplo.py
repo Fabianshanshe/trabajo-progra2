@@ -24,7 +24,7 @@ class AplicacionConPestanas(ctk.CTk):
 
     def crear_pestanas(self):
         # Crear y configurar las pestañas
-        self.tab1 = self.tabview.add("Ingreso de Libros")
+        self.tab1 = self.tabview.add("Ingreso de Productos")
 
         # Configurar el contenido de la pestaña 1
         self.configurar_pestana1()
