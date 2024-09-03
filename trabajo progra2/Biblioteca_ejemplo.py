@@ -18,3 +18,4 @@ class Biblioteca_ejemplo:
 
     def obtener_libros(self):
         return [libro for libro in self.lista_libros]
+    

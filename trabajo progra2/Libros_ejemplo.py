@@ -1,8 +1,4 @@
 class Libros_ejemplo:
-    def __init__(self, nombre, ingrediente):
+    def __init__(self, nombre, categoria):
         self.nombre = nombre
-        self.ingrediente = ingrediente
-
-
-    def __str__(self):
-        return f"{self.nombre} "
+        self.categoria = categoria
