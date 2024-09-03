@@ -25,9 +25,11 @@ class AplicacionConPestanas(ctk.CTk):
     def crear_pestanas(self):
         # Crear y configurar las pestañas
         self.tab1 = self.tabview.add("Ingreso de Productos")
+        self.tab2 = self.tabview.add("Menu")
 
         # Configurar el contenido de la pestaña 1
         self.configurar_pestana1()
+        self.configurar_pestana2()
 
     def configurar_pestana1(self):
         # Dividir la pestaña en dos frames
@@ -38,7 +40,7 @@ class AplicacionConPestanas(ctk.CTk):
         frame_treeview.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
         # Formulario en el primer frame
-        label_nombre = ctk.CTkLabel(frame_formulario, text="Nombre del Libro:")
+        label_nombre = ctk.CTkLabel(frame_formulario, text="Nombre del Producto:")
         label_nombre.pack(pady=5)
         self.entry_nombre = ctk.CTkEntry(frame_formulario)
         self.entry_nombre.pack(pady=5)
@@ -50,9 +52,9 @@ class AplicacionConPestanas(ctk.CTk):
 
 
         #Boton de ingreso
-        self.boton_ingresar = ctk.CTkButton(frame_formulario, text="Ingresar Libro")
-        self.boton_ingresar.configure(command=self.ingresar_libro)
-        self.boton_ingresar.pack(pady=10)
+        self.boton_eliminar = ctk.CTkButton(frame_formulario, text="Ingresar Producto")
+        self.boton_eliminar.configure(command=self.ingresar_libro)
+        self.boton_eliminar.pack(pady=10)
         
         # Botón para eliminar libro arriba del Treeview
         self.boton_eliminar = ctk.CTkButton(frame_treeview, text="Eliminar Libro", fg_color="black", text_color="white")
@@ -65,6 +67,28 @@ class AplicacionConPestanas(ctk.CTk):
         self.tree.heading("Categoria", text="Categoria")
         
         self.tree.pack(expand=True, fill="both", padx=10, pady=10)
+
+    def configurar_pestana2(self):
+        frame_superior = ctk.CTkFrame(self.tab2)
+        frame_superior.pack( fill="both", expand=True, padx=10, pady=10)
+
+        frame_inferior= ctk.CTkFrame(self.tab2)
+        frame_inferior.pack(fill="both", expand=True, padx= 20, pady=10)
+
+        boton_eliminar = ctk.CTkButton(frame_inferior, text="Eliminar Menu", compound= "right")
+        boton_eliminar.configure(command=self.eliminar_libro)
+        boton_eliminar.pack(pady=10)
+
+        treeview = ttk.Treeview(frame_inferior, columns=("Nombre","Cantidad","Categoria"), show="headings")
+        treeview.heading("Nombre", text="Nombre del Menú")
+        treeview.heading("Cantidad", text="Cantidad")
+        treeview.heading("Categoria", text="Precio Unitario")
+        treeview.pack(expand=True, fill="both", padx=10, pady=10)
+
+        boton_generar = ctk.CTkButton(frame_inferior, text="Generar Boleta")
+        boton_generar.configure(command=self.ingresar_libro)
+        boton_generar.pack(pady=10)
+
 
     def validar_nombre(self, nombre):
         if re.match(r"^[a-zA-Z\s]+$", nombre):
