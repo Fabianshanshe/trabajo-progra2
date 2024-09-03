@@ -24,12 +24,10 @@ class AplicacionConPestanas(ctk.CTk):
 
     def crear_pestanas(self):
         # Crear y configurar las pestañas
-        self.tab1 = self.tabview.add("Ingreso de Ingredientes")
-        self.tab2 = self.tabview.add("Pedido")
+        self.tab1 = self.tabview.add("Ingreso de Libros")
 
         # Configurar el contenido de la pestaña 1
         self.configurar_pestana1()
-        self.configurar_pestana2()
 
     def configurar_pestana1(self):
         # Dividir la pestaña en dos frames
@@ -40,62 +38,33 @@ class AplicacionConPestanas(ctk.CTk):
         frame_treeview.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
         # Formulario en el primer frame
-        label_nombre = ctk.CTkLabel(frame_formulario, text="Ingrediente:")
-        label_nombre.pack(pady=5)
-        self.entry_nombre = ctk.CTkEntry(frame_formulario)
-        self.entry_nombre.pack(pady=5)
-        
-        label_nombre = ctk.CTkLabel(frame_formulario, text="Precio:")
-        label_nombre.pack(pady=5)
-        self.entry_nombre = ctk.CTkEntry(frame_formulario)
-        self.entry_nombre.pack(pady=5)
-
-
-        #Boton de ingreso
-        self.boton_ingresar = ctk.CTkButton(frame_formulario, text="Ingresar Ingrediente")
-        self.boton_ingresar.configure(command=self.ingresar_ingrediente)
-        self.boton_ingresar.pack(pady=10)
-
-        # Botón para eliminar libro arriba del Treeview
-        self.boton_eliminar = ctk.CTkButton(frame_treeview, text="Eliminar Libro", fg_color="black", text_color="white")
-        self.boton_eliminar.configure(command=self.eliminar_libro)
-        self.boton_eliminar.pack(pady=10)
-
-        # Treeview en el segundo frame
-        self.tree = ttk.Treeview(frame_treeview, columns=("Nombre","Nombre2"), show="headings")
-        self.tree.heading("Nombre", text="Ingrediente")
-        self.tree.heading("Nombre2", text = "wea")
-        self.tree.pack(expand=True, fill="both", padx=10, pady=10)
-        
-        
-    def configurar_pestana2(self):
-        # Dividir la pestaña en dos frames
-        frame_formulario = ctk.CTkFrame(self.tab2)
-        frame_formulario.pack(side="left", fill="both", expand=True, padx=10, pady=10)
-
-        frame_treeview = ctk.CTkFrame(self.tab2)
-        frame_treeview.pack(side="right", fill="both", expand=True, padx=10, pady=10)
-
-        # Formulario en el primer frame
         label_nombre = ctk.CTkLabel(frame_formulario, text="Nombre del Libro:")
         label_nombre.pack(pady=5)
         self.entry_nombre = ctk.CTkEntry(frame_formulario)
         self.entry_nombre.pack(pady=5)
+        
+        label_categoria = ctk.CTkLabel(frame_formulario, text = "Categoria")
+        label_categoria.pack(pady=5)
+        self.entry_categoria = ctk.CTkEntry(frame_formulario)
+        self.entry_categoria.pack(pady = 5)
+
 
         #Boton de ingreso
-        self.boton_ingresar = ctk.CTkButton(frame_formulario, text="Ingresar ingrediente")
-        self.boton_ingresar.configure(command=self.ingresar_ingrediente)
+        self.boton_ingresar = ctk.CTkButton(frame_formulario, text="Ingresar Libro")
+        self.boton_ingresar.configure(command=self.ingresar_libro)
         self.boton_ingresar.pack(pady=10)
-
+        
         # Botón para eliminar libro arriba del Treeview
         self.boton_eliminar = ctk.CTkButton(frame_treeview, text="Eliminar Libro", fg_color="black", text_color="white")
         self.boton_eliminar.configure(command=self.eliminar_libro)
         self.boton_eliminar.pack(pady=10)
-        # Treeview en el segundo frame
-        self.tree = ttk.Treeview(frame_treeview, columns=("Nombre"), show="headings")
-        self.tree.heading("Nombre", text="Nombre")
-        self.tree.pack(expand=True, fill="both", padx=10, pady=10)
 
+        # Treeview en el segundo frame
+        self.tree = ttk.Treeview(frame_treeview, columns=("Nombre","Categoria"), show="headings")
+        self.tree.heading("Nombre", text="Nombre")
+        self.tree.heading("Categoria", text="Categoria")
+        
+        self.tree.pack(expand=True, fill="both", padx=10, pady=10)
 
     def validar_nombre(self, nombre):
         if re.match(r"^[a-zA-Z\s]+$", nombre):
@@ -103,28 +72,38 @@ class AplicacionConPestanas(ctk.CTk):
         else:
             CTkMessagebox(title="Error de Validación", message="El nombre debe contener solo letras y espacios.", icon="warning")
             return False
+    def validar_precio(self, Categoria):
+        if re.match(r"[1-999]", Categoria):
+            return True
+        else:
+            CTkMessagebox(title="Error de Validación", message="la categoria debe contener solo numeros", icon="warning")
+            return False
 
         
    
 
-    def ingresar_ingrediente (self):
+    def ingresar_libro(self):
         nombre = self.entry_nombre.get()
+        categoria = self.entry_categoria.get()
 
         # Validar entradas
         if not self.validar_nombre(nombre):
             return
-        
+        if not self.validar_precio(categoria):
+            return
         # Crear una instancia de Libro
-        libro = Libros_ejemplo(nombre)
+        libro = Libros_ejemplo(nombre,categoria)
 
         # Agregar el libro a la biblioteca
         if self.biblioteca.agregar_libro(libro):
             self.actualizar_treeview()
+        else:
+            CTkMessagebox(title="Error", message="El libro ya existe en la biblioteca.", icon="warning")
 
     def eliminar_libro(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            CTkMessagebox(title="Error", message="Por favor selecciona un producto para eliminar.", icon="warning")
+            CTkMessagebox(title="Error", message="Por favor selecciona un libro para eliminar.", icon="warning")
             return
 
         item = self.tree.item(seleccion)
@@ -143,7 +122,7 @@ class AplicacionConPestanas(ctk.CTk):
 
         # Agregar todos los libros de la biblioteca al Treeview
         for libro in self.biblioteca.obtener_libros():
-            self.tree.insert("", "end", values=(libro.nombre))
+            self.tree.insert("", "end", values=(libro.nombre, libro.categoria))
 
 
 if __name__ == "__main__":
