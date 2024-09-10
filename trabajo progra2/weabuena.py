@@ -17,7 +17,13 @@ class AplicacionConPestanas(ctk.CTk):
 
         # Definir recetas predefinidas
         self.recetas = {
-            "hamburguesa": [("Pan", "2"), ("Lechuga", "1"), ("Carne", "1")],
+            "hamburguesa": [("Pan", "2"), ("Lechuga", "1"), ("Carne", "1"),("Tomate", "1"),("Tomate", "1")],
+            "papas fritas":[("Papas","2")],
+            "bebida":[("Cocacola","1")],
+            "completo":[("Pan","1"), ("Vienesa","1"),("Palta","1"),("Tomate","1")]
+            
+            
+            
             # Agregar más recetas según se necesiten
         }
 
