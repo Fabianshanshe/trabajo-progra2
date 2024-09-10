@@ -79,10 +79,10 @@ class AplicacionConPestanas(ctk.CTk):
         frame_treeview.pack(side="bottom", fill="both", expand=True, padx=10, pady=10)
 
         #Nro1 Meli Arreglo
-        imagen1 = PhotoImage(file="C:\\Users\\Meliq\\OneDrive\\Desktop\\TrabajoProgra2\\Hamburguesa.png")
-        imagen2 = PhotoImage(file="C:\\Users\\Meliq\\OneDrive\\Desktop\\TrabajoProgra2\\Hotdog.png")
-        imagen3 = PhotoImage(file="C:\\Users\\Meliq\\OneDrive\\Desktop\\TrabajoProgra2\\PapasFritas.png")
-        imagen4 = PhotoImage(file="C:\\Users\\Meliq\\OneDrive\\Desktop\\TrabajoProgra2\\Bebida.png")
+        imagen1 = PhotoImage(file="trabajo-progra2\\Hamburguesa.png")
+        imagen2 = PhotoImage(file="trabajo-progra2\\Hotdog.png")
+        imagen3 = PhotoImage(file="trabajo-progra2\\PapasFritas.png")
+        imagen4 = PhotoImage(file="trabajo-progra2\\Bebida.png")
         
         #Boton Hamburguesa
         self.boton_imagen = ctk.CTkButton(frame_formulario, text="Hamburguesa", image=imagen1, 
