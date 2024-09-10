@@ -73,16 +73,10 @@ class AplicacionConPestanas(ctk.CTk):
     def configurar_pestana2(self):
         # Dividir la pestaña en dos frames
         frame_formulario = ctk.CTkFrame(self.tab2)
-        frame_formulario.pack(side="left", fill="both", expand=True, padx=10, pady=10)
+        frame_formulario.pack(side="top", fill="x", expand=True, padx=10, pady=10)
 
         frame_treeview = ctk.CTkFrame(self.tab2)
-        frame_treeview.pack(side="right", fill="both", expand=True, padx=10, pady=10)
-
-        # Formulario en el primer frame
-        label_nombre = ctk.CTkLabel(frame_formulario, text="Nombre del producto:")
-        label_nombre.pack(pady=5)
-        self.entry_nombre = ctk.CTkEntry(frame_formulario)
-        self.entry_nombre.pack(pady=5)
+        frame_treeview.pack(side="bottom", fill="both", expand=True, padx=10, pady=10)
 
         #Nro1 Meli Arreglo
         imagen1 = PhotoImage(file="C:\\Users\\Meliq\\OneDrive\\Desktop\\TrabajoProgra2\\Hamburguesa.png")
@@ -94,25 +88,25 @@ class AplicacionConPestanas(ctk.CTk):
         self.boton_imagen = ctk.CTkButton(frame_formulario, text="Hamburguesa", image=imagen1, 
                                   fg_color="black", hover_color="red", width=100, height=100,
                                   compound="top")
-        self.boton_imagen.pack(pady=10)
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
         
         #Boton Papas Fritas
         self.boton_imagen = ctk.CTkButton(frame_formulario, text="Papas Fritas", image=imagen3, 
                                   fg_color="black", hover_color="red", width=100, height=100,
                                   compound="top")
-        self.boton_imagen.pack(pady=10)
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
         
         #Boton Hotdog
         self.boton_imagen = ctk.CTkButton(frame_formulario, text="Hotdog", image=imagen2, 
                                   fg_color="black", hover_color="red", width=100, height=100,
                                   compound="top")
-        self.boton_imagen.pack(pady=10)
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
         
         #Boton Bebida
         self.boton_imagen = ctk.CTkButton(frame_formulario, text="Bebida", image=imagen4, 
                                   fg_color="black", hover_color="red", width=100, height=100,
                                   compound="top")
-        self.boton_imagen.pack(pady=10)
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
 
 
         #Boton de ingreso
