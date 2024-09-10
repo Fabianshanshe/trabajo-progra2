@@ -4,6 +4,7 @@ from Libros_ejemplo import Libros_ejemplo
 from Biblioteca_ejemplo import Biblioteca_ejemplo
 import re
 from CTkMessagebox import CTkMessagebox
+from tkinter import PhotoImage
 
 class AplicacionConPestanas(ctk.CTk):
     def __init__(self):
@@ -53,7 +54,7 @@ class AplicacionConPestanas(ctk.CTk):
 
         #Boton de ingreso
         self.boton_eliminar = ctk.CTkButton(frame_formulario, text="Ingresar Producto")
-        self.boton_eliminar.configure(command=self.ingresar_libro)
+        self.boton_eliminar.configure(command=self.ingresar_menu)
         self.boton_eliminar.pack(pady=10)
         
         # Botón para eliminar libro arriba del Treeview
@@ -75,6 +76,34 @@ class AplicacionConPestanas(ctk.CTk):
         frame_inferior= ctk.CTkFrame(self.tab2)
         frame_inferior.pack(fill="both", expand=True, padx= 20, pady=10)
 
+        imagen1 = PhotoImage(file="trabajo-progra2\\Hamburguesa.png")
+        imagen2 = PhotoImage(file="trabajo-progra2\\Hotdog.png")
+        imagen3 = PhotoImage(file="trabajo-progra2\\PapasFritas.png")
+        imagen4 = PhotoImage(file="trabajo-progra2\\Bebida.png")
+
+        self.boton_imagen = ctk.CTkButton(frame_superior, text="Hamburguesa", image=imagen1, 
+                                  fg_color="black", hover_color="red", width=100, height=100,
+                                  compound="top")
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
+
+        #Boton Papas Fritas
+        self.boton_imagen = ctk.CTkButton(frame_superior, text="Papas Fritas", image=imagen3, 
+                                  fg_color="black", hover_color="red", width=100, height=100,
+                                  compound="top")
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
+        
+        #Boton Hotdog
+        self.boton_imagen = ctk.CTkButton(frame_superior, text="Hotdog", image=imagen2, 
+                                  fg_color="black", hover_color="red", width=100, height=100,
+                                  compound="top")
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
+        
+        #Boton Bebida
+        self.boton_imagen = ctk.CTkButton(frame_superior, text="Bebida", image=imagen4, 
+                                  fg_color="black", hover_color="red", width=100, height=100,
+                                  compound="top")
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
+
         boton_eliminar = ctk.CTkButton(frame_inferior, text="Eliminar Menu", compound= "right")
         boton_eliminar.configure(command=self.eliminar_libro)
         boton_eliminar.pack(pady=10)
@@ -86,7 +115,7 @@ class AplicacionConPestanas(ctk.CTk):
         treeview.pack(expand=True, fill="both", padx=10, pady=10)
 
         boton_generar = ctk.CTkButton(frame_inferior, text="Generar Boleta")
-        boton_generar.configure(command=self.ingresar_libro)
+        boton_generar.configure(command=self.ingresar_menu)
         boton_generar.pack(pady=10)
 
 
@@ -106,7 +135,7 @@ class AplicacionConPestanas(ctk.CTk):
         
    
 
-    def ingresar_libro(self):
+    def ingresar_menu(self):
         nombre = self.entry_nombre.get()
         categoria = self.entry_categoria.get()
 
@@ -122,12 +151,12 @@ class AplicacionConPestanas(ctk.CTk):
         if self.biblioteca.agregar_libro(libro):
             self.actualizar_treeview()
         else:
-            CTkMessagebox(title="Error", message="El libro ya existe en la biblioteca.", icon="warning")
+            CTkMessagebox(title="Error", message="El menu ya existe en la biblioteca.", icon="warning")
 
     def eliminar_libro(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            CTkMessagebox(title="Error", message="Por favor selecciona un libro para eliminar.", icon="warning")
+            CTkMessagebox(title="Error", message="Por favor selecciona un menu para eliminar.", icon="warning")
             return
 
         item = self.tree.item(seleccion)
