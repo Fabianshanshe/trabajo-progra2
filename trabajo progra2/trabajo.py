@@ -6,7 +6,6 @@ import re
 from CTkMessagebox import CTkMessagebox
 from tkinter import PhotoImage
 
-
 class AplicacionConPestanas(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -27,7 +26,7 @@ class AplicacionConPestanas(ctk.CTk):
     def crear_pestanas(self):
         # Crear y configurar las pestañas
         self.tab1 = self.tabview.add("Ingreso de Productos")
-        self.tab2 = self.tabview.add("Pedido")
+        self.tab2 = self.tabview.add("Menu")
 
         # Configurar el contenido de la pestaña 1
         self.configurar_pestana1()
@@ -42,93 +41,97 @@ class AplicacionConPestanas(ctk.CTk):
         frame_treeview.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
         # Formulario en el primer frame
-        label_nombre = ctk.CTkLabel(frame_formulario, text="Producto:")
+        label_nombre = ctk.CTkLabel(frame_formulario, text="Nombre del Producto:")
         label_nombre.pack(pady=5)
         self.entry_nombre = ctk.CTkEntry(frame_formulario)
         self.entry_nombre.pack(pady=5)
         
-        label_nombre = ctk.CTkLabel(frame_formulario, text="Precio:")
-        label_nombre.pack(pady=5)
-        self.entry_nombre = ctk.CTkEntry(frame_formulario)
-        self.entry_nombre.pack(pady=5)
+        label_categoria = ctk.CTkLabel(frame_formulario, text = "Categoria")
+        label_categoria.pack(pady=5)
+        self.entry_categoria = ctk.CTkEntry(frame_formulario)
+        self.entry_categoria.pack(pady = 5)
 
 
         #Boton de ingreso
-        self.boton_ingresar = ctk.CTkButton(frame_formulario, text="Ingresar producto")
-        self.boton_ingresar.configure(command=self.ingresar_ingrediente)
-        self.boton_ingresar.pack(pady=10)
-
+        self.boton_eliminar = ctk.CTkButton(frame_formulario, text="Ingresar Producto")
+        self.boton_eliminar.configure(command=self.ingresar_menu)
+        self.boton_eliminar.pack(pady=10)
+        
         # Botón para eliminar libro arriba del Treeview
-        self.boton_eliminar = ctk.CTkButton(frame_treeview, text="Eliminar producto", fg_color="black", text_color="white")
+        self.boton_eliminar = ctk.CTkButton(frame_treeview, text="Eliminar Libro", fg_color="black", text_color="white")
         self.boton_eliminar.configure(command=self.eliminar_libro)
         self.boton_eliminar.pack(pady=10)
 
         # Treeview en el segundo frame
-        self.tree = ttk.Treeview(frame_treeview, columns=("Nombre","Nombre2"), show="headings")
-        self.tree.heading("Nombre", text="Producto")
-        self.tree.heading("Nombre2", text = "wea")
+        self.tree = ttk.Treeview(frame_treeview, columns=("Nombre","Categoria"), show="headings")
+        self.tree.heading("Nombre", text="Nombre")
+        self.tree.heading("Categoria", text="Categoria")
+        
         self.tree.pack(expand=True, fill="both", padx=10, pady=10)
-        
-        
+
     def configurar_pestana2(self):
-        # Dividir la pestaña en dos frames
-        frame_formulario = ctk.CTkFrame(self.tab2)
-        frame_formulario.pack(side="left", fill="both", expand=True, padx=10, pady=10)
+        frame_superior = ctk.CTkFrame(self.tab2)
+        frame_superior.pack( fill="both", expand=True, padx=10, pady=10)
 
-        frame_treeview = ctk.CTkFrame(self.tab2)
-        frame_treeview.pack(side="right", fill="both", expand=True, padx=10, pady=10)
+        frame_inferior= ctk.CTkFrame(self.tab2)
+        frame_inferior.pack(fill="both", expand=True, padx= 20, pady=10)
 
-        # Formulario en el primer frame
-        label_nombre = ctk.CTkLabel(frame_formulario, text="Nombre del producto:")
-        label_nombre.pack(pady=5)
-        self.entry_nombre = ctk.CTkEntry(frame_formulario)
-        self.entry_nombre.pack(pady=5)
-
-        #Nro1 Meli Arreglo
         imagen1 = PhotoImage(file="trabajo-progra2\\Hamburguesa.png")
         imagen2 = PhotoImage(file="trabajo-progra2\\Hotdog.png")
         imagen3 = PhotoImage(file="trabajo-progra2\\PapasFritas.png")
         imagen4 = PhotoImage(file="trabajo-progra2\\Bebida.png")
-        
-        #Boton Hamburguesa
-        self.boton_imagen = ctk.CTkButton(frame_formulario, text="Hamburguesa", image=imagen1, 
+
+        self.boton_imagen = ctk.CTkButton(frame_superior, text="Hamburguesa", image=imagen1, 
                                   fg_color="black", hover_color="red", width=100, height=100,
-                                  compound="top")
-        self.boton_imagen.pack(pady=10)
-        
+                                  compound="top", command=lambda: self.agregar_producto("Hamburguesa", 1, 3500))
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
+
         #Boton Papas Fritas
-        self.boton_imagen = ctk.CTkButton(frame_formulario, text="Papas Fritas", image=imagen3, 
+        self.boton_imagen = ctk.CTkButton(frame_superior, text="Papas Fritas", image=imagen3, 
                                   fg_color="black", hover_color="red", width=100, height=100,
-                                  compound="top")
-        self.boton_imagen.pack(pady=10)
+                                  compound="top", command=lambda: self.agregar_producto("Papas Fritas", 1, 500))
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
         
         #Boton Hotdog
-        self.boton_imagen = ctk.CTkButton(frame_formulario, text="Hotdog", image=imagen2, 
+        self.boton_imagen = ctk.CTkButton(frame_superior, text="Hotdog", image=imagen2, 
                                   fg_color="black", hover_color="red", width=100, height=100,
-                                  compound="top")
-        self.boton_imagen.pack(pady=10)
+                                  compound="top", command=lambda: self.agregar_producto("Hotdog", 1, 1800))
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
         
         #Boton Bebida
-        self.boton_imagen = ctk.CTkButton(frame_formulario, text="Bebida", image=imagen4, 
+        self.boton_imagen = ctk.CTkButton(frame_superior, text="Bebida", image=imagen4, 
                                   fg_color="black", hover_color="red", width=100, height=100,
-                                  compound="top")
-        self.boton_imagen.pack(pady=10)
+                                  compound="top", command=lambda: self.agregar_producto("Bebida", 1, 1100))
+        self.boton_imagen.pack(side="left", padx="25", pady=10)
+
+        boton_eliminar = ctk.CTkButton(frame_inferior, text="Eliminar Menu", compound= "right")
+        boton_eliminar.configure(command=self.eliminar_libro)
+        boton_eliminar.pack(pady=10)
+
+        self.treeview = ttk.Treeview(frame_inferior, columns=("Nombre", "Cantidad", "Precio"), show="headings")
+        self.treeview.heading("Nombre", text="Nombre del Producto")
+        self.treeview.heading("Cantidad", text="Cantidad")
+        self.treeview.heading("Precio", text="Precio Unitario")
+        self.treeview.pack(expand=True, fill="both", padx=10, pady=10)
+
+        boton_generar = ctk.CTkButton(frame_inferior, text="Generar Boleta")
+        boton_generar.configure(command=self.ingresar_menu)
+        boton_generar.pack(pady=10)
+        
+    def agregar_producto(self, nombre, cantidad, precio):
+        # Buscar el producto en el Treeview
+        for item in self.treeview.get_children():
+            if self.treeview.item(item, 'values')[0] == nombre:
+                # Si el producto ya existe, actualizar la cantidad y el precio
+                current_values = self.treeview.item(item, 'values')
+                new_cantidad = int(current_values[1]) + cantidad
+                self.treeview.item(item, values=(nombre, new_cantidad, precio))
+                return
+
+        # Si el producto no existe, agregarlo al Treeview
+        self.treeview.insert("", "end", values=(nombre, cantidad, precio))
 
 
-        #Boton de ingreso
-        #self.boton_ingresar = ctk.CTkButton(frame_formulario, text="Ingresar producto")
-        #self.boton_ingresar.configure(command=self.ingresar_ingrediente)
-        #self.boton_ingresar.pack(pady=10)
-
-        # Botón para eliminar libro arriba del Treeview
-        self.boton_eliminar = ctk.CTkButton(frame_treeview, text="Eliminar producto", fg_color="black", text_color="white")
-        self.boton_eliminar.configure(command=self.eliminar_libro)
-        self.boton_eliminar.pack(pady=10)
-
-        # Treeview en el segundo frame
-        self.tree = ttk.Treeview(frame_treeview, columns=("Nombre"), show="headings")
-        self.tree.heading("Nombre", text="Nombre")
-        self.tree.pack(expand=True, fill="both", padx=10, pady=10)
 
 
     def validar_nombre(self, nombre):
@@ -137,28 +140,38 @@ class AplicacionConPestanas(ctk.CTk):
         else:
             CTkMessagebox(title="Error de Validación", message="El nombre debe contener solo letras y espacios.", icon="warning")
             return False
+    def validar_precio(self, Categoria):
+        if re.match(r"[1-999]", Categoria):
+            return True
+        else:
+            CTkMessagebox(title="Error de Validación", message="la categoria debe contener solo numeros", icon="warning")
+            return False
 
         
    
 
-    def ingresar_ingrediente (self):
+    def ingresar_menu(self):
         nombre = self.entry_nombre.get()
+        categoria = self.entry_categoria.get()
 
         # Validar entradas
         if not self.validar_nombre(nombre):
             return
-        
+        if not self.validar_precio(categoria):
+            return
         # Crear una instancia de Libro
-        libro = Libros_ejemplo(nombre)
+        libro = Libros_ejemplo(nombre,categoria)
 
         # Agregar el libro a la biblioteca
         if self.biblioteca.agregar_libro(libro):
             self.actualizar_treeview()
+        else:
+            CTkMessagebox(title="Error", message="El menu ya existe en la biblioteca.", icon="warning")
 
     def eliminar_libro(self):
         seleccion = self.tree.selection()
         if not seleccion:
-            CTkMessagebox(title="Error", message="Por favor selecciona un producto para eliminar.", icon="warning")
+            CTkMessagebox(title="Error", message="Por favor selecciona un menu para eliminar.", icon="warning")
             return
 
         item = self.tree.item(seleccion)
@@ -177,7 +190,7 @@ class AplicacionConPestanas(ctk.CTk):
 
         # Agregar todos los libros de la biblioteca al Treeview
         for libro in self.biblioteca.obtener_libros():
-            self.tree.insert("", "end", values=(libro.nombre))
+            self.tree.insert("", "end", values=(libro.nombre, libro.categoria))
 
 
 if __name__ == "__main__":
