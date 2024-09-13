@@ -87,10 +87,10 @@ class AplicacionConPestanas(ctk.CTk):
         frame_inferior.pack(fill="both", expand=True, padx=20, pady=10)
 
         # Cargar imágenes
-        imagen1 = PhotoImage(file="trabajo-progra2\\trabajo progra2\\imagenes\\Hamburguesa.png")
-        imagen2 = PhotoImage(file="trabajo-progra2\\trabajo progra2\\imagenes\\Hotdog.png")
-        imagen3 = PhotoImage(file="trabajo-progra2\\trabajo progra2\\imagenes\\PapasFritas.png")
-        imagen4 = PhotoImage(file="trabajo-progra2\\trabajo progra2\\imagenes\\Bebida.png")
+        imagen1 = PhotoImage(file="trabajo progra2\\imagenes\\Hamburguesa.png")
+        imagen2 = PhotoImage(file="trabajo progra2\\imagenes\\Hotdog.png")
+        imagen3 = PhotoImage(file="trabajo progra2\\imagenes\\PapasFritas.png")
+        imagen4 = PhotoImage(file="trabajo progra2\\imagenes\\Bebida.png")
 
         # Botones para agregar productos
         self.boton_imagen = ctk.CTkButton(frame_superior, text="Hamburguesa", image=imagen1, 
